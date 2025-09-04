@@ -1,38 +1,569 @@
-.App {
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  background-image: url('./assets/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  height: 100vh;
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow: hidden;
+}
+
+/* (모바일 상태바 제거) */
+
+/* Header Card - Glassmorphism */
+.header-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-text h1 {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.header-text p {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.leg-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.leg-button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leg-button.active {
+  background: #007AFF;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.leg-button:not(.active) {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.leg-button:hover {
+  transform: scale(1.05);
+}
+
+/* Connection Status */
+.connection-status {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.status-indicator {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.status-indicator.connected {
+  background: rgba(0, 255, 0, 0.2);
+  color: #00ff00;
+  border: 1px solid rgba(0, 255, 0, 0.3);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.status-indicator.disconnected {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff0000;
+  border: 1px solid rgba(255, 0, 0, 0.3);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.status-indicator.calibrated {
+  background: rgba(0, 255, 0, 0.2);
+  color: #00ff00;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.status-indicator.not-calibrated {
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+  border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+/* Control Buttons */
+.control-buttons {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.control-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.connect-btn {
+  background: rgba(0, 122, 255, 0.8);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.connect-btn:hover:not(:disabled) {
+  background: rgba(0, 122, 255, 1);
+  transform: scale(1.05);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.calibrate-btn {
+  background: rgba(255, 165, 0, 0.8);
+  color: white;
+}
+
+.calibrate-btn:hover:not(:disabled) {
+  background: rgba(255, 165, 0, 1);
+  transform: scale(1.05);
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.nav-tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-tab.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.nav-tab:hover:not(.active) {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Current Selection */
+.current-selection {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 8px 0;
+}
+
+/* Gauge Container */
+.gauge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 200px;
+}
+
+.gauge {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.gauge-outer {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.gauge-fill {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border-radius: 50%;
+  background: conic-gradient(#007AFF 0deg 273.6deg, rgba(255,255,255,0.2) 273.6deg 360deg);
+  mask: radial-gradient(circle, transparent 60%, black 60%);
+  -webkit-mask: radial-gradient(circle, transparent 60%, black 60%);
+}
+
+.gauge-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.gauge-label {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.gauge-value {
+  color: rgba(255, 255, 255, 0.98);
+  font-size: 36px;
+  font-weight: 700;
+}
+
+/* Auto-Tuning Section */
+.auto-tuning-section {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.auto-tuning-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #007AFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.auto-tuning-header span {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #007AFF, #00D4FF);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Strength Control Card */
+.strength-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.strength-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.strength-info {
+  flex: 1;
+}
+
+.strength-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.strength-slider {
+  position: relative;
+}
+
+.slider-track {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+  background: #007AFF;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);
+}
+
+.slider-input {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.slider-input::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.slider-input::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Auto-Set Toggle */
+.auto-set-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.toggle-switch {
+  width: 50px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch.active {
+  background: #007AFF;
+}
+
+.toggle-thumb {
+  width: 26px;
+  height: 26px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-thumb {
+  transform: translateX(20px);
+}
+
+/* Motor Controls */
+.motor-controls {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.motor-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.pull-btn {
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+}
+
+.pull-btn:hover:not(:disabled) {
+  background: rgba(255, 0, 0, 1);
+  transform: scale(1.05);
+}
+
+.release-btn {
+  background: rgba(0, 255, 0, 0.8);
+  color: white;
+}
+
+.release-btn:hover:not(:disabled) {
+  background: rgba(0, 255, 0, 1);
+  transform: scale(1.05);
+}
+
+.motor-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* (모바일 홈 인디케이터 제거) */
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .app { 
+    max-width: 600px;
+    padding: 30px;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .gauge {
+    width: 280px;
+    height: 280px;
   }
+  
+  .gauge-value {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app { 
+    padding: 20px; 
+    max-width: 100%;
+  }
+  
+  .gauge {
+    width: 240px;
+    height: 240px;
+  }
+  
+  .gauge-value {
+    font-size: 40px;
+  }
+  
+  .header-text h1 {
+    font-size: 28px;
+  }
+  
+  .header-text p {
+    font-size: 16px;
+  }
+}
+
+/* Hover Effects */
+.leg-button:hover,
+.nav-tab:hover,
+.toggle-switch:hover {
+  transform: scale(1.05);
+}
+
+/* Focus States */
+.leg-button:focus,
+.nav-tab:focus,
+.toggle-switch:focus,
+.slider-input:focus {
+  outline: 2px solid #007AFF;
+  outline-offset: 2px;
 }
